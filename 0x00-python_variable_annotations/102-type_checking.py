@@ -5,7 +5,7 @@
 from typing import Tuple, List
 
 
-def zoom_array(lst:List , factor: int = 2) -> List:
+def zoom_array(lst: List, factor: int = 2) -> List:
     """
     Type-annotated function that takes in Tuple and
     int as argument and returns a Tuple
