@@ -4,7 +4,8 @@ import random
 import asyncio
 from typing import AsyncGenerator, AsyncIterator
 
-async def async_generator() -> AsyncIterator[float]:
+
+async def async_generator():
     """ Async Generator """
     for i in range(10):
         await asyncio.sleep(1)
