@@ -3,8 +3,12 @@
 Test class for utils.py
 """
 import unittest
+from unittest.mock import patch, MagicMock
 from parameterized import parameterized
 access_nested_map = __import__("utils").access_nested_map
+get_json = __import__("utils").get_json
+requests = __import__("utils").requests
+# import requests
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -30,4 +34,25 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
-        # self.assertEqual(error.exception, KeyError('a'))
+
+
+class TestGetJson(unittest.TestCase):
+    """
+    Test the get json method of utils
+    """
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False})
+    ])
+    def test_get_json(self, test_url, test_payload):
+        with patch('requests.get') as mock_get:
+            # Mock response object.
+            # Mocking an instance of the Response class
+            mock_response = MagicMock()
+            mock_response.json.return_value = test_payload
+
+            # requests.get returns an instance of the response
+            # class, we assign the mocked response object
+            mock_get.return_value = mock_response
+            payload = get_json(test_url)
+        self.assertEqual(payload, test_payload)
