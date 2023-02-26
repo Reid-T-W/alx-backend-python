@@ -45,6 +45,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False})
     ])
     def test_get_json(self, test_url, test_payload):
+        """test_get_json"""
         with patch('requests.get') as mock_get:
             # Mock response object.
             # Mocking an instance of the Response class
@@ -72,16 +73,18 @@ class TestMemoize(unittest.TestCase):
             Class for testing purpose
             """
             def a_method(self):
+                """a_method"""
                 return 42
 
             @memoize
             def a_property(self):
+                """a_property"""
                 return self.a_method()
 
         prop_inst = TestClass()
         with patch.object(TestClass, 'a_method') as mock_get:
-            mock_get.return_value = 42
+            mock_get.return_value = 32
             value = prop_inst.a_property
             value = prop_inst.a_property
-            self.assertEqual(value, 42)
+            self.assertEqual(value, 32)
             mock_get.assert_called_once()
