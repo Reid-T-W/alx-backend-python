@@ -69,9 +69,9 @@ class TestGithubOrgClient(unittest.TestCase):
     #     with patch('client.GithubOrgClient._public_repos_url',
     #                 new_callable=PropertyMock) as _public_repos_url_mock:
     #         _public_repos_url_mock.return_value = "http://hi"
-    #         # mock_response = MagicMock()
-    #         # mock_response.json.return_value =
-    #         get_json_mock.return_value = [{"name": "apps"}]
+    #         mock_response = MagicMock()
+    #         mock_response.json.return_value = {"name": "apps"}
+    #         get_json_mock.return_value = mock_response
     #         result = instance.public_repos()
     #         self.assertEqual(result, ["apps"])
     #         _public_repos_url_mock.assert_called_once()
@@ -87,3 +87,15 @@ class TestGithubOrgClient(unittest.TestCase):
     #     # mock_response.return_value = 1
     #     get_json_mock.return_value = 1
     #     self.assertEqual(utils.get_json('http://google.com'), 1)
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
+    ])
+    def test_has_license(self, repo, license_key, expected):
+        """
+        Testing GithubOrgClient.has_license
+        """
+        instance = GithubOrgClient('google')
+        license_exists = instance.has_license(repo, license_key)
+        self.assertEqual(license_exists, expected)
