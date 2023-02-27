@@ -113,14 +113,14 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.patcher = patch('requests.get')
-        mock_get = cls.patcher.start()
+        cls.get_patcher = patch('requests.get')
+        mock_get = cls.get_patcher.start()
         mock_get.side_effect = [cls.org_payload, cls.repos_payload,
                                 cls.expected_repos, cls.apache2_repos]
 
     @classmethod
     def tearDownClass(cls):
-        cls.patcher.stop()
+        cls.get_patcher.stop()
 
     # def test_get(self):
     #     self.assertEqual(requests.get("hello"),
