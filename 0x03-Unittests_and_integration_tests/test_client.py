@@ -97,7 +97,6 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         Testing GithubOrgClient.has_license
         """
-        # instance = GithubOrgClient('google')
         license_exists = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(license_exists, expected)
 
@@ -115,8 +114,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def setUpClass(cls):
         cls.get_patcher = patch('requests.get')
         mock_get = cls.get_patcher.start()
-        mock_get.side_effect = [cls.org_payload, cls.repos_payload,
-                                cls.expected_repos, cls.apache2_repos]
+        # mock_get.json.side_effect = [cls.org_payload, cls.repos_payload,
+        #                         cls.expected_repos, cls.apache2_repos]
+        mock_get.json.side_effect = cls.org_payload
 
     @classmethod
     def tearDownClass(cls):
@@ -125,7 +125,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     # def test_public_repos(self):
     #     instance = GithubOrgClient('google')
     #     value = instance.public_repos()
-    #     print(value)
-    #     # for i in range(4):
+    #     value = instance.public_repos()
+    #     value = instance.public_repos()
+    #     value = instance.public_repos()
+    #     # for i in range(0, 2):
     #     #     value = instance.public_repos()
+    #     print("In here: ", value)
     #     self.assertEqual(value, self.apache2_repos)
+
+    # def test_get(self):
+    #     self.assertEqual(requests.get("hello"),
+    #     {'repos_url': 'https://api.github.com/orgs/google/repos'})
