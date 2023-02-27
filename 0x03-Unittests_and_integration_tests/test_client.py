@@ -3,7 +3,7 @@
 Testing client.py
 """
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, PropertyMock
 from parameterized import parameterized
 requests = __import__("utils").requests
 GithubOrgClient = __import__("client").GithubOrgClient
@@ -40,3 +40,20 @@ class TestGithubOrgClient(unittest.TestCase):
         # hence the mocked get function is executed only once
         mock_get_json.assert_called_once()
         self.assertEqual(doc, {"payload": True})
+
+    def test_public_repos_url(self):
+        """
+        Test GithubOrgClient._public_repos_url
+        """
+        instance = GithubOrgClient('google')
+        # Mocking the org method of GithubOrgClient, it is
+        # considered a propoerty because the @memoize decorator
+        # turns it into a property
+        with patch('client.GithubOrgClient.org',
+                   new_callable=PropertyMock) as org_mock:
+            org_mock.return_value = {"repos_url": True}
+
+            # The _public_repos_url method returns the value
+            # associated with the key "repos_url"
+            value = instance._public_repos_url
+            self.assertEqual(value, True)
