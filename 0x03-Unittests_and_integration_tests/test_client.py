@@ -97,8 +97,8 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         Testing GithubOrgClient.has_license
         """
-        instance = GithubOrgClient('google')
-        license_exists = instance.has_license(repo, license_key)
+        # instance = GithubOrgClient('google')
+        license_exists = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(license_exists, expected)
 
 # ---------------------------------------------------------------
@@ -122,6 +122,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def tearDownClass(cls):
         cls.get_patcher.stop()
 
-    # def test_get(self):
-    #     self.assertEqual(requests.get("hello"),
-    #     {'repos_url': 'https://api.github.com/orgs/google/repos'})
+    # def test_public_repos(self):
+    #     instance = GithubOrgClient('google')
+    #     value = instance.public_repos()
+    #     print(value)
+    #     # for i in range(4):
+    #     #     value = instance.public_repos()
+    #     self.assertEqual(value, self.apache2_repos)
