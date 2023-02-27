@@ -4,11 +4,12 @@ Testing client.py
 """
 import unittest
 from unittest.mock import patch, MagicMock, PropertyMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 requests = __import__("utils").requests
 GithubOrgClient = __import__("client").GithubOrgClient
 # get_json = __import__("utils").get_json
 utils = __import__("utils")
+TEST_PAYLOAD = __import__("fixtures").TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -99,3 +100,28 @@ class TestGithubOrgClient(unittest.TestCase):
         instance = GithubOrgClient('google')
         license_exists = instance.has_license(repo, license_key)
         self.assertEqual(license_exists, expected)
+
+# ---------------------------------------------------------------
+# Integration Testing (Task 8)
+
+
+@parameterized_class(('org_payload', 'repos_payload',
+                      'expected_repos', 'apache2_repos'), [
+    (TEST_PAYLOAD[0][0], TEST_PAYLOAD[0][1],
+     TEST_PAYLOAD[0][2], TEST_PAYLOAD[0][3]),
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.patcher = patch('requests.get')
+        mock_get = cls.patcher.start()
+        mock_get.side_effect = [cls.org_payload, cls.repos_payload,
+                                cls.expected_repos, cls.apache2_repos]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.patcher.stop()
+
+    # def test_get(self):
+    #     self.assertEqual(requests.get("hello"),
+    #     {'repos_url': 'https://api.github.com/orgs/google/repos'})
