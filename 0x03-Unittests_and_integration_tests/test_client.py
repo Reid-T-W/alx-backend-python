@@ -70,24 +70,11 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as _public_repos_url_mock:
             _public_repos_url_mock.return_value = "http://hi"
-            # mock_response = MagicMock()
-            # mock_response.json.return_value =
             get_json_mock.return_value = [{"name": "apps"}]
             result = instance.public_repos()
             self.assertEqual(result, ["apps"])
             _public_repos_url_mock.assert_called_once()
             get_json_mock.assert_called_once()
-
-    # @patch('utils.get_json')
-    # def test_public_repos(self, get_json_mock):
-    #     """
-    #     Test GithubOrgClient.public_repos
-    #     """
-    #     # instance = GithubOrgClient('google')
-    #     # mock_response = MagicMock()
-    #     # mock_response.return_value = 1
-    #     get_json_mock.return_value = 1
-    #     self.assertEqual(utils.get_json('http://google.com'), 1)
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
