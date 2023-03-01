@@ -61,22 +61,22 @@ class TestGithubOrgClient(unittest.TestCase):
             value = instance._public_repos_url
             self.assertEqual(value, True)
 
-    # @patch('utils.get_json')
-    # def test_public_repos(self, get_json_mock):
-    #     """
-    #     Test GithubOrgClient.public_repos
-    #     """
-    #     instance = GithubOrgClient('google')
-    #     with patch('client.GithubOrgClient._public_repos_url',
-    #                 new_callable=PropertyMock) as _public_repos_url_mock:
-    #         _public_repos_url_mock.return_value = "http://hi"
-    #         mock_response = MagicMock()
-    #         mock_response.json.return_value = {"name": "apps"}
-    #         get_json_mock.return_value = mock_response
-    #         result = instance.public_repos()
-    #         self.assertEqual(result, ["apps"])
-    #         _public_repos_url_mock.assert_called_once()
-    #         get_json_mock.assert_called_once()
+    @patch('client.get_json')
+    def test_public_repos(self, get_json_mock):
+        """
+        Test GithubOrgClient.public_repos
+        """
+        instance = GithubOrgClient('google')
+        with patch('client.GithubOrgClient._public_repos_url',
+                    new_callable=PropertyMock) as _public_repos_url_mock:
+            # _public_repos_url_mock.return_value = "http://hi"
+            # mock_response = MagicMock()
+            # mock_response.json.return_value = 
+            get_json_mock.return_value = [{"name": "apps"}]
+            result = instance.public_repos()
+            self.assertEqual(result, ["apps"])
+            _public_repos_url_mock.assert_called_once()
+            get_json_mock.assert_called_once()
 
     # @patch('utils.get_json')
     # def test_public_repos(self, get_json_mock):
@@ -113,10 +113,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.get_patcher = patch('requests.get')
-        mock_get = cls.get_patcher.start()
+        cls.mock_get = cls.get_patcher.start()
         # mock_get.json.side_effect = [cls.org_payload, cls.repos_payload,
         #                         cls.expected_repos, cls.apache2_repos]
-        mock_get.json.side_effect = cls.org_payload
+        cls.mock_get.side_effect = cls.repos_payload
 
     @classmethod
     def tearDownClass(cls):
@@ -124,13 +124,17 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     # def test_public_repos(self):
     #     instance = GithubOrgClient('google')
+    #     # mock_response = MagicMock()
+    #     # mock_response.json.return_value = self.repos_payload
+    #     # self.mock_get.return_value = self.repos_payload
     #     value = instance.public_repos()
-    #     value = instance.public_repos()
-    #     value = instance.public_repos()
-    #     value = instance.public_repos()
+    #     # print(value)
+    #     # value = instance.public_repos()
+    #     # value = instance.public_repos()
+    #     # value = instance.public_repos()
     #     # for i in range(0, 2):
     #     #     value = instance.public_repos()
-    #     print("In here: ", value)
+    #     # print("In here: ", value)
     #     self.assertEqual(value, self.apache2_repos)
 
     # def test_get(self):
