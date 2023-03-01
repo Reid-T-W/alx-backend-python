@@ -68,10 +68,10 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         instance = GithubOrgClient('google')
         with patch('client.GithubOrgClient._public_repos_url',
-                    new_callable=PropertyMock) as _public_repos_url_mock:
-            # _public_repos_url_mock.return_value = "http://hi"
+                   new_callable=PropertyMock) as _public_repos_url_mock:
+            _public_repos_url_mock.return_value = "http://hi"
             # mock_response = MagicMock()
-            # mock_response.json.return_value = 
+            # mock_response.json.return_value =
             get_json_mock.return_value = [{"name": "apps"}]
             result = instance.public_repos()
             self.assertEqual(result, ["apps"])
