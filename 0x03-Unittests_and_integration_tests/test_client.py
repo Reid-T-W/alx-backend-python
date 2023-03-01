@@ -110,8 +110,10 @@ class TestGithubOrgClient(unittest.TestCase):
      TEST_PAYLOAD[0][2], TEST_PAYLOAD[0][3]),
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ Integration test for GithubOrgClient """
     @classmethod
     def setUpClass(cls):
+        """ Setup that is run befor every test """
         cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
         # mock_get.json.side_effect = [cls.org_payload, cls.repos_payload,
@@ -120,6 +122,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """ Teardown that is run after every test """
         cls.get_patcher.stop()
 
     # def test_public_repos(self):
