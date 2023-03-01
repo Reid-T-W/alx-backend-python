@@ -129,8 +129,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # self.assertEqual(value, self.apache2_repos)
         pass
 
-    def test_get(self):
-        """ Test for get """
+    # def test_get(self):
+    #     """ Test for get """
+    #     pass
+    #     # self.assertEqual(requests.get("hello"),
+    #     # {'repos_url': 'https://api.github.com/orgs/google/repos'})
+    def test_public_repos_with_license(self):
+        """ Test for public repos with license """
         pass
-        # self.assertEqual(requests.get("hello"),
-        # {'repos_url': 'https://api.github.com/orgs/google/repos'})
