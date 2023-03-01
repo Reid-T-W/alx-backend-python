@@ -112,10 +112,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """ Test for public repos method """
         instance = GithubOrgClient('google')
         mock_response = MagicMock()
+        # Side effects are put in place because the get
+        # function returns different values the parameters
+        # it is given, so the mock must mimic that.
         mock_response.json.side_effect = [self.org_payload,
-                                          self.repos_payload,
-                                          self.expected_repos,
-                                          self.apache2_repos]
+                                          self.repos_payload]
         self.mock_get.return_value = mock_response
         value = instance.public_repos()
         self.assertEqual(value, self.expected_repos)
