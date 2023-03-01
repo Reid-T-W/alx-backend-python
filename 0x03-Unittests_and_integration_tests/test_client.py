@@ -7,7 +7,6 @@ from unittest.mock import patch, MagicMock, PropertyMock
 from parameterized import parameterized, parameterized_class
 requests = __import__("utils").requests
 GithubOrgClient = __import__("client").GithubOrgClient
-# get_json = __import__("utils").get_json
 utils = __import__("utils")
 TEST_PAYLOAD = __import__("fixtures").TEST_PAYLOAD
 
@@ -88,7 +87,7 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(license_exists, expected)
 
 # ---------------------------------------------------------------
-# Integration Testing (Task 8)
+# Integration Testing (Task 8 and 9)
 
 
 @parameterized_class(('org_payload', 'repos_payload',
@@ -103,10 +102,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """ Setup that is run befor every test """
         cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
-        # mock_response.json.return_value = self.repos_payload
-        # cls.mock_get.side_effect = [cls.org_payload, cls.repos_payload,
-        #                             cls.expected_repos, cls.apache2_repos]
-        # cls.mock_get.side_effect = cls.org_payload
 
     @classmethod
     def tearDownClass(cls):
@@ -116,37 +111,19 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos(self):
         """ Test for public repos method """
         instance = GithubOrgClient('google')
-        # mock_response = MagicMock()
-        # mock_response.json.return_value = self.repos_payload
-        # self.mock_get.return_value = self.repos_payload
         mock_response = MagicMock()
-        # mock_response.json.return_value = self.repos_payload
         mock_response.json.side_effect = [self.org_payload,
                                           self.repos_payload,
                                           self.expected_repos,
                                           self.apache2_repos]
         self.mock_get.return_value = mock_response
         value = instance.public_repos()
-        # # print(value)
-        # # value = instance.public_repos()
-        # # value = instance.public_repos()
-        # # value = instance.public_repos()
-        # # for i in range(0, 2):
-        # #     value = instance.public_repos()
-        # # print("In here: ", value)
         self.assertEqual(value, self.expected_repos)
-        pass
 
-    # def test_get(self):
-    #     """ Test for get """
-    #     pass
-    #     # self.assertEqual(requests.get("hello"),
-    #     # {'repos_url': 'https://api.github.com/orgs/google/repos'})
     def test_public_repos_with_license(self):
         """ Test for public repos with license """
         instance = GithubOrgClient('google')
         mock_response = MagicMock()
-        # mock_response.json.return_value = self.repos_payload
         mock_response.json.side_effect = [self.org_payload,
                                           self.repos_payload,
                                           self.expected_repos,
